@@ -1,5 +1,4 @@
 import store from '@/store'
-import { isTestnet } from '../../libs/utils'
 
 const modules = [
   {
@@ -58,7 +57,7 @@ function processMenu() {
       if (excludes === undefined || excludes.indexOf(m.route) === -1) {
         if (m.scope.match('normal') || m.scope.match(chain)) {
           children.push({
-          // header: `item-${chain}-${m.route}`,
+            // header: `item-${chain}-${m.route}`,
             title: m.title,
             route: { name: m.route, params: { chain } },
           })
@@ -69,32 +68,24 @@ function processMenu() {
     chainMenus.push(menu)
   })
   chainMenus.push({ header: 'LINKS' })
-  if (isTestnet()) {
-    chainMenus.push({
-      title: 'Mainnet Explorer',
-      href: 'https://ping.pub',
-      icon: 'ChromeIcon',
-    })
-  } else {
-    chainMenus.push({
-      title: 'Testnet Explorer',
-      href: 'http://testnet.ping.pub',
-      icon: 'LifeBuoyIcon',
-    })
-  }
+  chainMenus.push({
+    title: 'Telegram',
+    href: 'https://t.me/jellypool',
+    icon: 'SendIcon',
+  })
   chainMenus.push({
     title: 'Discord',
-    href: 'https://discord.gg/CmjYVSr6GW',
+    href: 'https://discord.gg/98qDyX3zfp',
     icon: 'EyeIcon',
   })
   chainMenus.push({
     title: 'Twitter',
-    href: 'https://twitter.com/ping_pub',
+    href: 'https://twitter.com/jellypool',
     icon: 'TwitterIcon',
   })
   chainMenus.push({
     title: 'Github',
-    href: 'https://github.com/ping-pub/explorer',
+    href: 'https://github.com/JellyPool/',
     icon: 'GithubIcon',
   })
 

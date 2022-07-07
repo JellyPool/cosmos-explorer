@@ -13,7 +13,7 @@
     </b-link>
 
     <p class="mb-1">
-      Explore, manage your cosmos wallet and more... 🛠
+      Explore, manage and more on cosmos... 🛠
     </p>
     <h2 class="mb-3">
       Cosmos Ecosystem Blockchains currently supported by Jelly 🚀
