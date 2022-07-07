@@ -11,6 +11,9 @@
     "lint": "vue-cli-service lint",
     "analyz": "vue-cli-service build --report"
   },
+  "engines": {
+    "node": ">=16 <18"
+  },
   "dependencies": {
     "@casl/ability": "4.1.6",
     "@casl/vue": "1.1.1",
