@@ -80,7 +80,7 @@ function processMenu() {
   })
   chainMenus.push({
     title: 'Twitter',
-    href: 'https://twitter.com/JellyDevs',
+    href: 'https://twitter.com/JellyPoolxyz',
     icon: 'TwitterIcon',
   })
   chainMenus.push({
