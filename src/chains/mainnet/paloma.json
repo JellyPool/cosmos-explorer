@@ -1,0 +1,25 @@
+{
+    "chain_name": "paloma",
+    "coingecko": "",
+    "api": [
+        "https://paloma-testnet.nodejumper.io:1317"
+    ],
+    "rpc": [
+        "https://paloma-testnet.nodejumper.io:443"
+    ],
+    "snapshot_provider": "",
+    "sdk_version": "0.45.4",
+    "coin_type": "118",
+    "min_tx_fee": "1250",
+    "addr_prefix": "paloma",
+    "logo": "/logos/paloma.png",
+    "assets": [
+        {
+            "base": "ugrain",
+            "symbol": "GRAIN",
+            "exponent": "6",
+            "coingecko_id": "",
+            "logo": "/logos/paloma.png"
+        }
+    ]
+}
