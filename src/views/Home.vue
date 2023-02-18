@@ -2,10 +2,10 @@
   <div class="text-center container-lg">
     <full-header />
     <b-link>
-      <div class="d-flex justify-content-center align-items-center">
+      <div class="d-flex justify-content-center align-items-center p-1">
         <vuexy-logo />
         <h1
-          class="text-primary display-4 font-weight-bolder d-none d-md-block ml-2"
+          class="text-primary display-4 font-weight-bolder d-none d-md-block ml-1"
         >
           Jelly Cosmos Explorer<small class="flow-left">Beta</small>
         </h1>
@@ -124,7 +124,7 @@ import {
 import Ripple from 'vue-ripple-directive'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import store from '@/store/index'
-import { timeIn, toDay } from '@/libs/utils'
+import { timeIn, toDay, getLocalChains } from '@/libs/utils'
 import AppFooter from '@/@core/layouts/components/AppFooter.vue'
 import FullHeader from './components/FullHeader.vue'
 
@@ -162,6 +162,12 @@ export default {
       }
       return this.downImg
     },
+  },
+  beforeCreate() {
+    const keys = Object.keys(getLocalChains())
+    if (keys.length === 1) {
+      this.$router.push(`/${keys[0]}`)
+    }
   },
   methods: {
     fetch(k) {
