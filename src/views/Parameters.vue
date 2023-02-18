@@ -5,57 +5,49 @@
       :show="syncing"
     >
       <div class="alert-body">
-        <span>No new blocks have been produced since  <strong>{{ latestTime }}</strong> </span>
+        <span>{{$t('parameters.no_blocks_produced')}}<strong>{{ latestTime }}</strong> </span>
       </div>
     </b-alert>
     <b-row>
       <b-col>
-        <summary-parmeters-component
-          :data="chain"
-        />
-      </b-col>
-    </b-row>
-    <b-row v-if="marketChartData">
-      <b-col>
-        <b-card>
-          <summary-price-chart
-            :chart-data="marketChartData"
-            :height="150"
-            :min-height="150"
-          />
-        </b-card>
+        <parameters-module-component :data="chain" />
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <summary-assets-component />
+        <parameters-module-component :data="mint" />
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <summary-parmeters-component :data="mint" />
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <summary-parmeters-component :data="staking" />
+        <parameters-module-component :data="staking" />
       </b-col>
     </b-row>
     <b-row v-if="gov.items.length > 0">
       <b-col>
-        <summary-parmeters-component :data="gov" />
+        <parameters-module-component :data="gov" />
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <summary-parmeters-component :data="distribution" />
+        <parameters-module-component :data="distribution" />
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <summary-parmeters-component :data="slashing" />
+        <parameters-module-component :data="slashing" />
       </b-col>
     </b-row>
+    <b-card>
+      <b-card-title class="card-title"><h4>{{$t('parameters.app_ver')}}</h4></b-card-title>
+      <b-card><object-field-component :tablefield="appVersion" /></b-card>
+    </b-card>
+    <b-card>
+      <b-card-title class="card-title">
+        <h4>{{$t('parameters.node_info')}}</h4>
+      </b-card-title>
+      <b-card><object-field-component :tablefield="nodeVersion" /></b-card>
+    </b-card>
   </div>
 </template>
 
@@ -64,12 +56,11 @@ import {
   BRow, BCol, BAlert, BCard,
 } from 'bootstrap-vue'
 import {
-  formatNumber, formatTokenAmount, getUserCurrency, isToken, percent, timeIn, toDay, toDuration, tokenFormatter,
+  formatNumber, formatTokenAmount, isToken, percent, timeIn, toDay, toDuration, tokenFormatter,
 } from '@/libs/utils'
 
-import SummaryParmetersComponent from './SummaryParmetersComponent.vue'
-import SummaryAssetsComponent from './SummaryAssetsComponent.vue'
-import SummaryPriceChart from './SummaryPriceChart.vue'
+import ParametersModuleComponent from './components/parameters/ParametersModuleComponent.vue'
+import ObjectFieldComponent from './components/ObjectFieldComponent.vue'
 
 export default {
   components: {
@@ -77,9 +68,8 @@ export default {
     BCol,
     BAlert,
     BCard,
-    SummaryParmetersComponent,
-    SummaryAssetsComponent,
-    SummaryPriceChart,
+    ParametersModuleComponent,
+    ObjectFieldComponent,
   },
   data() {
     return {
@@ -116,30 +106,9 @@ export default {
         title: 'Governance Parameters',
         items: [],
       },
+      appVersion: null,
+      nodeVersion: null,
     }
-  },
-  computed: {
-    marketChartData() {
-      if (this.marketData && this.marketData.prices) {
-        const labels = this.marketData.prices.map(x => x[0])
-        const data = this.marketData.prices.map(x => x[1])
-        return {
-          labels,
-          datasets: [
-            {
-              label: `Price (${getUserCurrency().toUpperCase()})`,
-              data,
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1,
-              pointStyle: 'dash',
-              barThickness: 15,
-            },
-          ],
-        }
-      }
-      return null
-    },
   },
   created() {
     this.$http.getLatestBlock().then(res => {
@@ -153,10 +122,6 @@ export default {
         this.syncing = false
       }
       this.latestTime = toDay(res.block.header.time, 'long')
-    })
-
-    this.$http.getMarketChart().then(res => {
-      this.marketData = res
     })
 
     this.$http.getStakingParameters().then(res => {
@@ -206,6 +171,10 @@ export default {
         this.$set(this.gov, 'items', items)
       })
     }
+    this.$http.getNodeInfo().then(res => {
+      this.appVersion = res.application_version
+      this.nodeVersion = res.default_node_info
+    })
   },
   methods: {
     normalize(data, title) {
@@ -238,7 +207,7 @@ export default {
         return v2
       }
       const d = parseFloat(v)
-      if (d === 0) return 0
+      if (d === 0) return '0'
       if (d < 1.01) {
         return `${percent(d)}%`
       }
